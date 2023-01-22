@@ -1,0 +1,241 @@
+swagger: "2.0"
+info:
+  title: LMS Platform
+  description: Backend Documentation for a LMS platform
+  version: 1.0
+  contact:
+    email: someone@gmail.com
+  license:
+    name: Apache 2.0
+    url: "http://apache.org"
+  servers: # I can not see them
+    -url: http://localhost:4000
+    description: This is my local server
+    -url: http://midomain.com
+    description: This is my production server
+
+schemes: [http, https]
+
+paths:
+#Return a string
+  /string:
+    get:
+      summary: Return a String
+      description: Return a String
+      responses:
+        200:
+          description: Success
+          schema:
+            type: string
+            example: A fake string
+        400:
+          description: User Error
+        500:
+          description: Internal Error
+#Return an Object
+  /object:
+    get:
+      summary: Return a Object (short description)
+      description: Return a Object - Description - Explanation
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                example: 666
+              name: 
+                type: string
+                example: Debil
+        400:
+          description: User Error
+        500:
+          description: Internal Error
+
+#Return an Array of Object
+  /objects:
+    get:
+      summary: Return an Array of Object 
+      description: Return an Array of Object
+      responses:
+        200:
+          description: Success
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  example: 666
+                name: 
+                  type: string
+                  example: Debil
+        400:
+          description: User Error
+        500:
+          description: Internal Error
+
+# Send path parameter
+  /objects/{param}:
+    get:
+      summary: Return an Array of Object 
+      description: Return an Array of Object
+      parameters:
+        - name: param
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Success
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  example: 666
+                name: 
+                  type: string
+                  example: Debil
+        400:
+          description: User Error
+        500:
+          description: Internal Error
+
+
+#Send json as payload in POST request AND Schema Definition
+  /create:
+    post:
+      summary: POST request with payload
+      description: Send json as payload in POST request
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+      - in: body
+        name: user
+        schema:
+          $ref: "#/components/schemas/User"
+      responses:
+        200:
+          description: Success
+        400:
+          description: User Error
+        500:
+          description: Internal Error
+
+#Query Parameter
+  /queryParameter:
+    get:
+      summary: The parameter?like=this
+      description: Sending a query parameter
+      parameters:
+      - in: query
+        name: id
+        type: integer
+        required: true
+        enum: [1, 2, 3]
+      - in: query
+        name: name
+        type: string
+        required: true
+        enum: ["Jhon", "Peter", "Marco"]
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/components/schemas/User"
+        400:
+          description: User Error
+        500:
+          description: Internal Error
+
+#File Upload Multiform Data
+  /upload:
+    post:
+      tags:
+        - Upload
+      summary: Upload Video/Image for Inferring
+      consumes:
+        - multipart/form-data
+      parameters:
+        - in: formData
+          name: file
+          type: file
+          required: true
+          description: The file to upload.
+        # - in: formData
+        #   name: id
+        #   type: string
+        #   required: true
+        #   description: Some random Id.
+      responses:
+        201:
+          description: Created
+        400:
+          description: User Error
+        500:
+          description: Internal Server Error
+
+#Return Sending Header
+  /header:
+    post:
+      summary: Handle Header
+      description: Handle Header
+      parameters:
+        - in: header
+          name: auth
+          schema:
+            type: string
+          required: true
+          description: Name of the header.
+      responses:
+        200:
+          description: Success
+        400:
+          description: User Error
+        500:
+          description: Internal Error
+
+
+#Return Sending Cookie
+  /cookie:
+    post:
+      summary: Sending cookie
+      description: Sending cookie
+      parameters:
+        - in: cookie
+          name: debug
+          schema:
+            type: string
+          required: true
+          description: Name of the cookie.
+      responses:
+        200:
+          description: Success
+        400:
+          description: User Error
+        500:
+          description: Internal Error
+
+#Componentes          
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          required: true
+          example: 888
+        name: 
+          type: string
+          example: Ocho
+
